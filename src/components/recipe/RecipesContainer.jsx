@@ -5,6 +5,8 @@ function RecipesContainer({ recipes }) {
    const [searchQuery, setSearchQuery] = useState("");
    const [sortOrder, setSortOrder] = useState("asc");
    const [sortBy, setSortBy] = useState("name");
+   const [currentPage, setCurrentPage] = useState(1);
+   const recipesPerPage = 9;
 
    const handleSearchInputChange = (event) => {
       setSearchQuery(event.target.value);
@@ -15,11 +17,17 @@ function RecipesContainer({ recipes }) {
    };
 
    const handleSortOrderChange = () => {
-      // Toggle sortOrder between 'asc' and 'desc'
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
    };
 
-   // Filter and sort recipes based on the search query, sortOrder, and sortBy
+   const nextPage = () => {
+      setCurrentPage(currentPage + 1);
+   };
+
+   const prevPage = () => {
+      setCurrentPage(currentPage - 1);
+   };
+
    const filteredAndSortedRecipes = recipes
       .filter((recipe) =>
          recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -36,6 +44,13 @@ function RecipesContainer({ recipes }) {
             return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
          }
       });
+
+   const indexOfLastRecipe = currentPage * recipesPerPage;
+   const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
+   const currentRecipes = filteredAndSortedRecipes.slice(
+      indexOfFirstRecipe,
+      indexOfLastRecipe
+   );
 
    return (
       <div className="recipes-container">
@@ -55,13 +70,13 @@ function RecipesContainer({ recipes }) {
                onClick={() => handleSortByChange("name")}
                className={sortBy === "name" ? "active" : ""}
             >
-               SORTEAR POR NOMBRE
+               Sort by Name
             </button>
             <button
                onClick={() => handleSortByChange("healthScore")}
                className={sortBy === "healthScore" ? "active" : ""}
             >
-               SORTEAR POR PUNTOS DE SALUD
+               Sort by Health Score
             </button>
             <button onClick={handleSortOrderChange}>
                {sortOrder === "asc" ? "Asc" : "Desc"}
@@ -69,13 +84,27 @@ function RecipesContainer({ recipes }) {
          </div>
 
          {/* Display filtered and sorted recipes */}
-         {filteredAndSortedRecipes.length > 0 ? (
-            filteredAndSortedRecipes.map((recipe, index) => (
+         {currentRecipes.length > 0 ? (
+            currentRecipes.map((recipe, index) => (
                <Recipe key={index} recipe={recipe} />
             ))
          ) : (
             <div>No matching recipes found.</div>
          )}
+
+         {/* Pagination */}
+         <div className="pagination">
+            <button onClick={prevPage} disabled={currentPage === 1}>
+               Prev
+            </button>
+            <span>{currentPage}</span>
+            <button
+               onClick={nextPage}
+               disabled={indexOfLastRecipe >= filteredAndSortedRecipes.length}
+            >
+               Next
+            </button>
+         </div>
       </div>
    );
 }

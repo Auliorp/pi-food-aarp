@@ -82,3 +82,4 @@ export const getRecipesById = async (id) => {
    }
    return result;
 };
+
