@@ -1,0 +1,17 @@
+.recipes-container {
+   display: grid;
+   grid-template-columns: repeat(5, 1fr);
+   .recipe {
+      height: auto;
+      width: 200px;
+      margin: 20px;
+      background: rgba(255, 158, 31, 0.377);
+      text-align: center;
+
+      border-radius: 10px;
+   }
+}
+
+.active {
+   background: red;
+}
