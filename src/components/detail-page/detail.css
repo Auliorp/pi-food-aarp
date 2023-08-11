@@ -1,0 +1,8 @@
+.detail-new {
+   height: auto;
+   width: 300px;
+   margin: 20px;
+   background: rgba(255, 158, 31, 0.377);
+   text-align: center;
+   border-radius: 10px;
+}

@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
 import "./landing.css";
 
 const Landing = () => {
@@ -11,10 +10,11 @@ const Landing = () => {
    };
 
    return (
-      <>
-         {/* <img src="" className="logo" alt="logo" /> */}
+      <div className="landing-page">
+         <h3>Bienvenido a mi proyecto </h3>
+
          <button onClick={redirectHome}>HOME</button>
-      </>
+      </div>
    );
 };
 

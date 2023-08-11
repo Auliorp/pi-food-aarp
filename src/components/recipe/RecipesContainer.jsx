@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import Recipe from "./Recipe";
+import "./recipesContainer.css";
+
+import { Link } from "react-router-dom";
 
 function RecipesContainer({ recipes }) {
    const [searchQuery, setSearchQuery] = useState("");
@@ -29,7 +32,7 @@ function RecipesContainer({ recipes }) {
    };
 
    const filteredAndSortedRecipes = recipes
-      .filter((recipe) =>
+      ?.filter((recipe) =>
          recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
       .sort((a, b) => {
@@ -47,41 +50,67 @@ function RecipesContainer({ recipes }) {
 
    const indexOfLastRecipe = currentPage * recipesPerPage;
    const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
-   const currentRecipes = filteredAndSortedRecipes.slice(
+   const currentRecipes = filteredAndSortedRecipes?.slice(
       indexOfFirstRecipe,
       indexOfLastRecipe
    );
 
    return (
       <div className="recipes-container">
-         {/* Search Bar */}
-         <div className="search-bar">
-            <input
-               type="text"
-               placeholder="Search recipes..."
-               value={searchQuery}
-               onChange={handleSearchInputChange}
-            />
-         </div>
+         <header className="headertop">
+            <div className="recipes-botton">
+               {/* Search Bar */}
+               <div className="search-bar">
+                  <input
+                     type="text"
+                     placeholder="Search recipes..."
+                     value={searchQuery}
+                     onChange={handleSearchInputChange}
+                  />
+               </div>
 
-         {/* Sorting Options */}
-         <div className="sort-options">
-            <button
-               onClick={() => handleSortByChange("name")}
-               className={sortBy === "name" ? "active" : ""}
-            >
-               Sort by Name
-            </button>
-            <button
-               onClick={() => handleSortByChange("healthScore")}
-               className={sortBy === "healthScore" ? "active" : ""}
-            >
-               Sort by Health Score
-            </button>
-            <button onClick={handleSortOrderChange}>
-               {sortOrder === "asc" ? "Asc" : "Desc"}
-            </button>
-         </div>
+               {/* Sorting Options */}
+               <div className="sort-options">
+                  <button
+                     onClick={() => handleSortByChange("name")}
+                     className={sortBy === "name" ? "active" : ""}
+                  >
+                     Sort by Name
+                  </button>
+                  <button
+                     onClick={() => handleSortByChange("healthScore")}
+                     className={sortBy === "healthScore" ? "active" : ""}
+                  >
+                     Sort by Health Score
+                  </button>
+                  <button onClick={handleSortOrderChange}>
+                     {sortOrder === "asc" ? "Asc" : "Desc"}
+                  </button>
+               </div>
+
+               {/* Pagination */}
+               <div className="pagination">
+                  <button onClick={prevPage} disabled={currentPage === 1}>
+                     Prev
+                  </button>
+                  <span>{currentPage}</span>
+                  <button
+                     onClick={nextPage}
+                     disabled={
+                        indexOfLastRecipe >= filteredAndSortedRecipes?.length
+                     }
+                  >
+                     Next
+                  </button>
+               </div>
+               {/* formulary */}
+               <div className="form-button">
+                  <Link to={"/form"}>
+                     <button>Formulario</button>
+                  </Link>
+               </div>
+            </div>
+         </header>
 
          {/* Display filtered and sorted recipes */}
          {currentRecipes.length > 0 ? (
@@ -91,20 +120,6 @@ function RecipesContainer({ recipes }) {
          ) : (
             <div>No matching recipes found.</div>
          )}
-
-         {/* Pagination */}
-         <div className="pagination">
-            <button onClick={prevPage} disabled={currentPage === 1}>
-               Prev
-            </button>
-            <span>{currentPage}</span>
-            <button
-               onClick={nextPage}
-               disabled={indexOfLastRecipe >= filteredAndSortedRecipes.length}
-            >
-               Next
-            </button>
-         </div>
       </div>
    );
 }

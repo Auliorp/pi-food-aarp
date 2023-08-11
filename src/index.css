@@ -5,9 +5,10 @@ body {
       "Helvetica Neue", sans-serif;
    -webkit-font-smoothing: antialiased;
    -moz-osx-font-smoothing: grayscale;
-   background-image: url(./image/fonditoSabroso.jpg);
+   background-image: url(./image/fondo.png);
    background-repeat: no-repeat;
    background-size: cover;
+   background-position: center bottom;
 }
 
 code {
