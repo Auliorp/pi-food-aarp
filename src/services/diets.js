@@ -5,7 +5,6 @@ export const getDiets = async (diets) => {
    try {
       const response = await axios.get(`http://localhost:3001/diets`);
       result = response.data;
-      console.log(response);
    } catch (error) {
       console.log(error);
    }

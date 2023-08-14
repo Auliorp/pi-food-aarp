@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 function Recipe(props) {
    const { name, image, diets, healthScore, id } = props.recipe;
+
    const navigate = useNavigate();
 
    const redirectDetail = (id) => {

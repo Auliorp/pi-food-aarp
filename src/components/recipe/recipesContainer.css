@@ -26,7 +26,6 @@
 .recipes-container {
    display: grid;
    grid-template-columns: repeat(3, 1fr);
-   place-items: center;
    .recipe {
       min-height: 480px;
       width: 262px;
@@ -35,6 +34,8 @@
       text-align: justify;
       padding: 0 15px;
       border-radius: 10px;
+      cursor: pointer;
+
       .image-container {
          margin: 15px 0;
          text-align: center;
@@ -42,5 +43,9 @@
             border-radius: 16px;
          }
       }
+   }
+   .recipe:hover {
+      border: 2px solid red;
+      transition: border ease 1s;
    }
 }

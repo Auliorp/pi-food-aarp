@@ -129,7 +129,7 @@ function RecipesContainer({ recipes }) {
 
          <div className="recipes-container">
             {/* Display filtered and sorted recipes */}
-            {currentRecipes.length > 0 ? (
+            {currentRecipes?.length > 0 ? (
                currentRecipes.map((recipe, index) => (
                   <Recipe key={index} recipe={recipe} />
                ))

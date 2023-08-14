@@ -246,7 +246,7 @@ let FormRecipe = () => {
                <label htmlFor="steps">Steps:</label>
                <input
                   /* value={formData.steps} */
-                  type="text"
+                  type="textarea"
                   name="steps"
                   placeholder="Ingresa aqui el paso a paso"
                   onChange={handleChange}

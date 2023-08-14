@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getAllRecipes, getRecipesById } from "../../services/recipes";
+import { getRecipesById } from "../../services/recipes";
 import { useParams, useNavigate } from "react-router-dom";
 import "./detail.css";
 import "../../utils/UI/buttons.css";
 
 const Detail = (props) => {
    const [recipe, setRecipe] = useState(null);
-   console.log(recipe);
+   
    const { id } = useParams();
 
    useEffect(() => {
@@ -15,7 +15,6 @@ const Detail = (props) => {
 
    const fetchRecipeById = async () => {
       const response = await getRecipesById(id);
-      /* const responseTwo = await getAllRecipes(); */
 
       setRecipe(response);
    };
