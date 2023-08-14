@@ -10,12 +10,19 @@ function Recipe(props) {
 
    return (
       <div className="recipe" onClick={() => redirectDetail(id)}>
-         <div className="image">
-            <img src={image} alt={name} width={100} height={100} />
+         <div className="image-container">
+            <img
+               src={image}
+               alt={name}
+               width={200}
+               height={200}
+               className="image"
+            />
          </div>
-         <div className="name-title">Nombre:</div>
+         <h4 className="name-title">Name:</h4>
          <div className="name">{name}</div>
-         <div className="diet-type">Tipo de dieta:</div>
+         <br />
+         <h4 className="diet-type">Types of diets:</h4>
          <div className="diets">
             {diets?.length > 0 &&
                diets.map((diet, index) => (
@@ -26,7 +33,8 @@ function Recipe(props) {
 
             {!diets?.length > 0 && <div className="div">No tiene</div>}
          </div>
-         <div className="health-score">{healthScore}</div>
+         <br />
+         <h4 className="health-score">Health score: {healthScore}</h4>
       </div>
    );
 }

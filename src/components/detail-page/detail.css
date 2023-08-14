@@ -1,8 +1,22 @@
 .detail-new {
    height: auto;
-   width: 300px;
-   margin: 20px;
+   width: 90%;
+   margin: 20px auto;
    background: rgba(255, 158, 31, 0.377);
-   text-align: center;
    border-radius: 10px;
+   padding: 20px;
+   text-align: justify;
+   .detail-close {
+      text-align: right;
+   }
+   .detail-description {
+      font-size: 16px;
+      font-weight: 400px;
+   }
+   .image-detail-container {
+      text-align: center;
+      .image-detail {
+         border-radius: 16px;
+      }
+   }
 }

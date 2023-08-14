@@ -1,0 +1,46 @@
+.button-primary {
+   border-radius: 8px;
+   height: 30px;
+   border: 1px solid #2649bf;
+   background-color: #2649bf;
+   color: white;
+   font-weight: 600;
+   cursor: pointer;
+}
+
+.button-primary:hover {
+   opacity: 0.8;
+   transition: opacity ease 0.2s;
+}
+
+.button-warning {
+   border-radius: 8px;
+   height: 30px;
+   border: 1px solid #d4302b;
+   background-color: #d4302b;
+   color: white;
+   font-weight: 600;
+   cursor: pointer;
+   min-width: 15px;
+}
+
+.button-warning:hover {
+   opacity: 0.8;
+   transition: opacity ease 0.2s;
+}
+
+.clean-button {
+   border-radius: 8px;
+   height: 30px;
+   border: 1px solid #2649bf;
+   background-color: white;
+   color: black;
+   font-weight: 600;
+   cursor: pointer;
+   min-width: 40px;
+}
+
+.clean-button:hover {
+   opacity: 0.8;
+   transition: opacity ease 0.2s;
+}

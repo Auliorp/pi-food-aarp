@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./form.css";
+import "../../utils/UI/buttons.css";
 import { getDiets } from "../../services/diets";
+import { postDiets } from "../../services/recipes";
+import { useNavigate } from "react-router-dom";
 
 let FormRecipe = () => {
    const [formData, setFormData] = useState({
@@ -21,8 +24,6 @@ let FormRecipe = () => {
       const response = await getDiets();
 
       setDietsData(response);
-      console.log(dietsData);
-      console.log(response);
    };
 
    const [error, setError] = useState({
@@ -32,8 +33,36 @@ let FormRecipe = () => {
       diets: "Campo requerido.",
    });
 
-   const handleSubmit = (event) => {
+   const handleSubmit = async (event) => {
       event.preventDefault();
+      const form = document.getElementById("form");
+      try {
+         // Llama a tu función de servicio para enviar los datos a la base de datos
+         const response = await postDiets(formData);
+
+         // Maneja la respuesta de la base de datos según tus necesidades
+         console.log("Receta creada exitosamente:", response);
+
+         // Limpia el formulario después de enviar los datos si es necesario
+         setFormData({
+            name: "",
+            description: "",
+            healthScore: "",
+            steps: "",
+            image: "",
+            diets: [],
+         });
+         form.reset();
+         setError({
+            name: "Campo requerido.",
+            healthScore: "Campo requerido.",
+            steps: "Campo requerido.",
+            diets: "Campo requerido.",
+         });
+      } catch (error) {
+         // Manejo de errores en caso de fallo al enviar los datos
+         console.error("Error al crear la receta:", error);
+      }
    };
 
    const handleMultiSelectChange = (event) => {
@@ -47,6 +76,23 @@ let FormRecipe = () => {
       } else {
          updatedDiets = [...formData.diets, selectedOption];
       }
+
+      setFormData({
+         ...formData,
+         diets: updatedDiets,
+      });
+
+      validate(
+         {
+            ...formData,
+            diets: updatedDiets,
+         },
+         "diets"
+      );
+   };
+
+   const handleChipRemove = (dietId) => {
+      const updatedDiets = formData.diets.filter((diet) => diet !== dietId);
 
       setFormData({
          ...formData,
@@ -153,94 +199,115 @@ let FormRecipe = () => {
          }
       }
    };
-
+   const navigate = useNavigate();
+   const redirectHome = () => {
+      navigate("/home");
+   };
    return (
-      <div className="form-all">
-         <form onSubmit={handleSubmit}>
-            <label htmlFor="name">Name:</label>
-            <input
-               /* value={formData.name} */
-               type="text"
-               name="name"
-               placeholder="Ingresa aqui tu nombre"
-               onChange={handleChange}
-            />
-            <label className="form-error">{error.name}</label>
-            <br />
-            <label htmlFor="description">Description:</label>
-            <input
-               /* value={formData.description} */
-               type="text"
-               name="description"
-               placeholder="Ingresa aqui tu descripcion"
-               onChange={handleChange}
-            />
-            <br />
-            <label htmlFor="healthScore">HealthScore:</label>
-            <input
-               /* value={formData.healthScore} */
-               type="text"
-               name="healthScore"
-               placeholder="Ingresa aqui tu puntaje de salud"
-               onChange={handleChange}
-            />
-            <label className="form-error">{error.healthScore}</label>
-            <br />
-            <label htmlFor="steps">Steps:</label>
-            <input
-               /* value={formData.steps} */
-               type="text"
-               name="steps"
-               placeholder="Ingresa aqui el paso a paso"
-               onChange={handleChange}
-            />
-            <label className="form-error">{error.steps}</label>
-            <br />
-            <label htmlFor="image">Image:</label>
-            <input
-               /* value={formData.image} */
-               type="text"
-               name="image"
-               placeholder="Ingresa aqui tu imagen"
-               onChange={handleChange}
-            />
-            <br />
-            <label htmlFor="diets">Diets:</label>
-            <select
-               name="diets"
-               value={formData.diets}
-               onChange={handleMultiSelectChange}
-            >
-               <option value="">Selecciona una dieta</option>
-               {dietsData?.map((diet) => (
-                  <option key={diet.id} value={diet.id}>
-                     {diet.nombre}
-                  </option>
-               ))}
-            </select>
-            <label className="form-error"> {error.diets}</label>
-            <div>
-               Dietas seleccionadas:
-               <ul>
+      <>
+         <div className="form-close">
+            <button onClick={redirectHome} className="button-warning">
+               X
+            </button>
+         </div>
+         <div className="form-all">
+            <form id="form" onSubmit={handleSubmit}>
+               <h2>Form:</h2>
+               <label htmlFor="name">Name:</label>
+               <input
+                  type="text"
+                  name="name"
+                  placeholder="Ingresa aqui tu nombre"
+                  onChange={handleChange}
+               />
+               <label className="form-error">{error.name}</label>
+               <br />
+
+               <label htmlFor="description">Description:</label>
+               <input
+                  type="text"
+                  name="description"
+                  placeholder="Ingresa aqui tu descripcion"
+                  onChange={handleChange}
+               />
+               <br />
+
+               <label htmlFor="healthScore">HealthScore:</label>
+               <input
+                  /* value={formData.healthScore} */
+                  type="text"
+                  name="healthScore"
+                  placeholder="Ingresa aqui tu puntaje de salud"
+                  onChange={handleChange}
+               />
+               <label className="form-error">{error.healthScore}</label>
+               <br />
+
+               <label htmlFor="steps">Steps:</label>
+               <input
+                  /* value={formData.steps} */
+                  type="text"
+                  name="steps"
+                  placeholder="Ingresa aqui el paso a paso"
+                  onChange={handleChange}
+               />
+               <label className="form-error">{error.steps}</label>
+               <br />
+
+               <label htmlFor="image">Image:</label>
+               <input
+                  /* value={formData.image} */
+                  type="text"
+                  name="image"
+                  placeholder="Ingresa aqui tu imagen"
+                  onChange={handleChange}
+               />
+               <br />
+
+               <label htmlFor="diets">Diets:</label>
+               <select
+                  name="diets"
+                  value={formData.diets}
+                  onChange={handleMultiSelectChange}
+               >
+                  <option value="">Selecciona una dieta</option>
+                  {dietsData?.map((diet) => (
+                     <option key={diet.nombre} value={diet.nombre}>
+                        {diet.nombre}
+                     </option>
+                  ))}
+               </select>
+               <label className="form-error"> {error.diets}</label>
+
+               <div>
+                  Dietas seleccionadas:
                   {formData.diets.map((dietId) => {
                      const selectedDiet = dietsData.find(
-                        (diet) => diet.id === dietId
+                        (diet) => diet.nombre === dietId
                      );
                      return (
-                        <li key={dietId}>
+                        <div key={dietId} className="chip">
                            {selectedDiet
                               ? selectedDiet.nombre
                               : "Nombre de dieta desconocido"}
-                        </li>
+                           <button onClick={() => handleChipRemove(dietId)}>
+                              X
+                           </button>
+                        </div>
                      );
                   })}
-               </ul>
-            </div>
+               </div>
 
-            <br />
-            <input disabled={disable()} type="submit" value="Enviar Receta" />
-         </form>
-      </div>
+               <br />
+               <input
+                  className="button-primary"
+                  disabled={disable()}
+                  type="submit"
+                  value="Enviar Receta"
+               />
+            </form>
+         </div>
+      </>
    );
 };
 

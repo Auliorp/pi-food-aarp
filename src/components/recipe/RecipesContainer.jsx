@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Recipe from "./Recipe";
 import "./recipesContainer.css";
+import "../../utils/UI/buttons.css";
 
 import { Link } from "react-router-dom";
 
@@ -33,7 +34,7 @@ function RecipesContainer({ recipes }) {
 
    const filteredAndSortedRecipes = recipes
       ?.filter((recipe) =>
-         recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
+         recipe.name?.toLowerCase().includes(searchQuery?.toLowerCase())
       )
       .sort((a, b) => {
          const aValue = sortBy === "name" ? a.name : a.healthScore;
@@ -56,9 +57,9 @@ function RecipesContainer({ recipes }) {
    );
 
    return (
-      <div className="recipes-container">
+      <>
          <header className="headertop">
-            <div className="recipes-botton">
+            <div className="recipes-button-container">
                {/* Search Bar */}
                <div className="search-bar">
                   <input
@@ -73,24 +74,37 @@ function RecipesContainer({ recipes }) {
                <div className="sort-options">
                   <button
                      onClick={() => handleSortByChange("name")}
-                     className={sortBy === "name" ? "active" : ""}
+                     className={
+                        sortBy === "name" ? "button-warning" : "button-primary"
+                     }
                   >
                      Sort by Name
                   </button>
                   <button
                      onClick={() => handleSortByChange("healthScore")}
-                     className={sortBy === "healthScore" ? "active" : ""}
+                     className={
+                        sortBy === "healthScore"
+                           ? "button-warning"
+                           : "button-primary"
+                     }
                   >
                      Sort by Health Score
                   </button>
-                  <button onClick={handleSortOrderChange}>
+                  <button
+                     onClick={handleSortOrderChange}
+                     className="clean-button"
+                  >
                      {sortOrder === "asc" ? "Asc" : "Desc"}
                   </button>
                </div>
 
                {/* Pagination */}
                <div className="pagination">
-                  <button onClick={prevPage} disabled={currentPage === 1}>
+                  <button
+                     onClick={prevPage}
+                     disabled={currentPage === 1}
+                     className="button-primary"
+                  >
                      Prev
                   </button>
                   <span>{currentPage}</span>
@@ -99,6 +113,7 @@ function RecipesContainer({ recipes }) {
                      disabled={
                         indexOfLastRecipe >= filteredAndSortedRecipes?.length
                      }
+                     className="button-primary"
                   >
                      Next
                   </button>
@@ -106,21 +121,23 @@ function RecipesContainer({ recipes }) {
                {/* formulary */}
                <div className="form-button">
                   <Link to={"/form"}>
-                     <button>Formulario</button>
+                     <button className="button-primary">Formulario</button>
                   </Link>
                </div>
             </div>
          </header>
 
-         {/* Display filtered and sorted recipes */}
-         {currentRecipes.length > 0 ? (
-            currentRecipes.map((recipe, index) => (
-               <Recipe key={index} recipe={recipe} />
-            ))
-         ) : (
-            <div>No matching recipes found.</div>
-         )}
-      </div>
+         <div className="recipes-container">
+            {/* Display filtered and sorted recipes */}
+            {currentRecipes.length > 0 ? (
+               currentRecipes.map((recipe, index) => (
+                  <Recipe key={index} recipe={recipe} />
+               ))
+            ) : (
+               <div>No matching recipes found.</div>
+            )}
+         </div>
+      </>
    );
 }
 
