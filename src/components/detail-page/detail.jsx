@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { getRecipesById } from "../../services/recipes";
 import { useParams, useNavigate } from "react-router-dom";
@@ -6,13 +7,13 @@ import "../../utils/UI/buttons.css";
 
 const Detail = (props) => {
    const [recipe, setRecipe] = useState(null);
-   
+
    const { id } = useParams();
 
    useEffect(() => {
       fetchRecipeById();
    }, []);
-
+   //buscar receta por ID
    const fetchRecipeById = async () => {
       const response = await getRecipesById(id);
 
@@ -22,7 +23,7 @@ const Detail = (props) => {
    const redirectHome = () => {
       navigate("/home");
    };
-   const regex = /<\/?[a-z][\s\S]*?>/gi;
+   const deleteRegex = /<\/?[a-z][\s\S]*?>/gi;
 
    return recipe ? (
       <div className="detail-new">
@@ -38,7 +39,7 @@ const Detail = (props) => {
          <br />
          <h3>Description:</h3>
          <label className="detail-description">
-            {recipe?.description.replace(regex, "")}
+            {recipe?.description.replace(deleteRegex, "")}
          </label>
          <br />
          <h3 className="detail-healthScore">
@@ -48,9 +49,9 @@ const Detail = (props) => {
          <h3>Steps:</h3>
          <label className="detail-steps">
             {recipe.steps?.length > 0 &&
-               recipe.steps.map((diet, index) => (
-                  <ul className="diet" key={index}>
-                     <li>{diet}</li>
+               recipe.steps.map((step, index) => (
+                  <ul key={index}>
+                     <li>{step}</li>
                   </ul>
                ))}
          </label>

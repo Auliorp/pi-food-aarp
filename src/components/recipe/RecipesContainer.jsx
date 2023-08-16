@@ -15,11 +15,11 @@ function RecipesContainer({ recipes }) {
    const handleSearchInputChange = (event) => {
       setSearchQuery(event.target.value);
    };
-
+   //ordenar por tipo
    const handleSortByChange = (type) => {
       setSortBy(type);
    };
-
+   //ordenar por clasificacion
    const handleSortOrderChange = () => {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
    };
@@ -31,7 +31,7 @@ function RecipesContainer({ recipes }) {
    const prevPage = () => {
       setCurrentPage(currentPage - 1);
    };
-
+   //filtro y orden de recetas
    const filteredAndSortedRecipes = recipes
       ?.filter((recipe) =>
          recipe.name?.toLowerCase().includes(searchQuery?.toLowerCase())
@@ -70,6 +70,13 @@ function RecipesContainer({ recipes }) {
                   />
                </div>
 
+               {/*  landing page */}
+               <div>
+                  <Link to={"/"}>
+                     <button className="button-primary">Landing</button>
+                  </Link>
+               </div>
+
                {/* Sorting Options */}
                <div className="sort-options">
                   <button
@@ -98,7 +105,7 @@ function RecipesContainer({ recipes }) {
                   </button>
                </div>
 
-               {/* Pagination */}
+               {/* paginado */}
                <div className="pagination">
                   <button
                      onClick={prevPage}
@@ -118,23 +125,25 @@ function RecipesContainer({ recipes }) {
                      Next
                   </button>
                </div>
-               {/* formulary */}
+               {/* formulario */}
                <div className="form-button">
                   <Link to={"/form"}>
-                     <button className="button-primary">Formulario</button>
+                     <button className="button-primary">Form</button>
                   </Link>
                </div>
             </div>
          </header>
 
          <div className="recipes-container">
-            {/* Display filtered and sorted recipes */}
+            {/*  recetas filtradas y ordenadas */}
             {currentRecipes?.length > 0 ? (
                currentRecipes.map((recipe, index) => (
                   <Recipe key={index} recipe={recipe} />
                ))
             ) : (
-               <div>No matching recipes found.</div>
+               <div className="error-message">
+                  <h4>No matching recipes found.</h4>
+               </div>
             )}
          </div>
       </>

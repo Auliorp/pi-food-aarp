@@ -32,7 +32,9 @@ function Recipe(props) {
                   </ul>
                ))}
 
-            {!diets?.length > 0 && <div className="div">No tiene</div>}
+            {!diets?.length > 0 && (
+               <div className="div">does not have a diet</div>
+            )}
          </div>
          <br />
          <h4 className="health-score">Health score: {healthScore}</h4>

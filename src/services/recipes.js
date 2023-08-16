@@ -10,7 +10,7 @@ export const getRecipes = async (name) => {
       }
 
       const response = await axios.get(`http://localhost:3001/recipes`, params);
-      
+
       result = response.data;
    } catch (error) {
       console.log(error);
@@ -45,7 +45,6 @@ export const getAllRecipes = async () => {
    try {
       const response = await axios.get(`http://localhost:3001/allRecipes`);
       result = response.data;
-      
    } catch (error) {
       console.log(error);
    }

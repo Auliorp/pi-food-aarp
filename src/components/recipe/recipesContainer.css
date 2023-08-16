@@ -1,5 +1,5 @@
 .headertop {
-   background-color: rgb(235, 206, 206);
+   background-color: #b5c496;
    position: sticky;
 
    top: 0%;
@@ -30,7 +30,7 @@
       min-height: 480px;
       width: 262px;
       margin: 20px;
-      background-color: #e7e9f7;
+      background-color: #e1e4d1da;
       text-align: justify;
       padding: 0 15px;
       border-radius: 10px;
@@ -45,7 +45,11 @@
       }
    }
    .recipe:hover {
-      border: 2px solid red;
+      border: 2px solid #84a365;
       transition: border ease 1s;
    }
+}
+
+.error-message {
+   margin-left: 10px;
 }

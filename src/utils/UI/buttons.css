@@ -1,8 +1,8 @@
 .button-primary {
    border-radius: 8px;
    height: 30px;
-   border: 1px solid #2649bf;
-   background-color: #2649bf;
+   border: 1px solid #b7cd7f;
+   background-color: #778c43;
    color: white;
    font-weight: 600;
    cursor: pointer;
@@ -16,8 +16,8 @@
 .button-warning {
    border-radius: 8px;
    height: 30px;
-   border: 1px solid #d4302b;
-   background-color: #d4302b;
+   border: 1px solid #012108;
+   background-color: #3c4d03;
    color: white;
    font-weight: 600;
    cursor: pointer;
@@ -32,8 +32,8 @@
 .clean-button {
    border-radius: 8px;
    height: 30px;
-   border: 1px solid #2649bf;
-   background-color: white;
+   border: 1px solid #cecfce;
+   background-color: #e1e4e1;
    color: black;
    font-weight: 600;
    cursor: pointer;

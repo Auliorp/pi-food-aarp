@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import "./form.css";
 import "../../utils/UI/buttons.css";
@@ -27,23 +28,22 @@ let FormRecipe = () => {
    };
 
    const [error, setError] = useState({
-      name: "Campo requerido.",
-      healthScore: "Campo requerido.",
-      steps: "Campo requerido.",
-      diets: "Campo requerido.",
+      name: "required field.",
+      healthScore: "required field.",
+      steps: "required field.",
+      diets: "required field.",
    });
 
    const handleSubmit = async (event) => {
       event.preventDefault();
       const form = document.getElementById("form");
       try {
-         // Llama a tu función de servicio para enviar los datos a la base de datos
+         // Llama a la función de servicio para enviar los datos a la db
          const response = await postDiets(formData);
 
-         // Maneja la respuesta de la base de datos según tus necesidades
-         console.log("Receta creada exitosamente:", response);
+         window.alert("Recipe created successfully");
 
-         // Limpia el formulario después de enviar los datos si es necesario
+         // Limpia el formulario
          setFormData({
             name: "",
             description: "",
@@ -54,13 +54,12 @@ let FormRecipe = () => {
          });
          form.reset();
          setError({
-            name: "Campo requerido.",
-            healthScore: "Campo requerido.",
-            steps: "Campo requerido.",
-            diets: "Campo requerido.",
+            name: "required field.",
+            healthScore: "required field.",
+            steps: "required field.",
+            diets: "required field.",
          });
       } catch (error) {
-         // Manejo de errores en caso de fallo al enviar los datos
          console.error("Error al crear la receta:", error);
       }
    };
@@ -135,19 +134,19 @@ let FormRecipe = () => {
       return disabled;
    };
    const validate = (formData, name) => {
-      const espaciosRegex = /^\s*$/;
-      const letrasRegex = /^[a-zA-Z\s]+$/;
+      const spaceRegex = /^\s*$/;
+      const letterRegex = /^[a-zA-Z\s]+$/;
 
       if (name === "name") {
          if (formData.name === "") {
-            setError({ ...error, name: "Campo requerido." });
-         } else if (espaciosRegex.test(formData.name)) {
+            setError({ ...error, name: "required field." });
+         } else if (spaceRegex.test(formData.name)) {
             setError({
                ...error,
-               name: "No puede tener espacios vacíos.",
+               name: "Cannot have empty spaces.",
             });
-         } else if (!letrasRegex.test(formData.name)) {
-            setError({ ...error, name: "Solo se permiten letras" });
+         } else if (!letterRegex.test(formData.name)) {
+            setError({ ...error, name: "only letters are allowed" });
          } else {
             setError({ ...error, name: "" });
          }
@@ -155,20 +154,20 @@ let FormRecipe = () => {
 
       if (name === "healthScore") {
          if (formData.healthScore === "") {
-            setError({ ...error, healthScore: "Campo requerido." });
-         } else if (espaciosRegex.test(formData.healthScore)) {
+            setError({ ...error, healthScore: "required field." });
+         } else if (spaceRegex.test(formData.healthScore)) {
             setError({
                ...error,
-               healthScore: "No puede tener espacios vacíos.",
+               healthScore: "Cannot have empty spaces.",
             });
          } else if (isNaN(formData.healthScore)) {
-            setError({ ...error, healthScore: "Solo se permiten números." });
+            setError({ ...error, healthScore: "only numbers are allowed." });
          } else {
             const healthScoreNumber = parseInt(formData.healthScore);
             if (healthScoreNumber < 1 || healthScoreNumber > 100) {
                setError({
                   ...error,
-                  healthScore: "Debe ser un número entre 1 y 100.",
+                  healthScore: "Must be a number between 1 and 100.",
                });
             } else {
                setError({ ...error, healthScore: "" });
@@ -177,11 +176,11 @@ let FormRecipe = () => {
       }
       if (name === "steps") {
          if (formData.steps === "") {
-            setError({ ...error, steps: "Campo requerido." });
-         } else if (espaciosRegex.test(formData.steps)) {
+            setError({ ...error, steps: "required field." });
+         } else if (spaceRegex.test(formData.steps)) {
             setError({
                ...error,
-               steps: "No puede tener espacios vacíos.",
+               steps: "Cannot have empty spaces.",
             });
          } else {
             setError({ ...error, steps: "" });
@@ -194,7 +193,7 @@ let FormRecipe = () => {
          } else {
             setError({
                ...error,
-               diets: "Debe seleccionar al menos una dieta.",
+               diets: "You must select at least one diet.",
             });
          }
       }
@@ -217,7 +216,7 @@ let FormRecipe = () => {
                <input
                   type="text"
                   name="name"
-                  placeholder="Ingresa aqui tu nombre"
+                  placeholder="Enter your name here"
                   onChange={handleChange}
                />
                <label className="form-error">{error.name}</label>
@@ -227,17 +226,16 @@ let FormRecipe = () => {
                <input
                   type="text"
                   name="description"
-                  placeholder="Ingresa aqui tu descripcion"
+                  placeholder="Enter your description here"
                   onChange={handleChange}
                />
                <br />
 
                <label htmlFor="healthScore">HealthScore:</label>
                <input
-                  /* value={formData.healthScore} */
                   type="text"
                   name="healthScore"
-                  placeholder="Ingresa aqui tu puntaje de salud"
+                  placeholder="Enter your health score here"
                   onChange={handleChange}
                />
                <label className="form-error">{error.healthScore}</label>
@@ -245,10 +243,9 @@ let FormRecipe = () => {
 
                <label htmlFor="steps">Steps:</label>
                <input
-                  /* value={formData.steps} */
                   type="textarea"
                   name="steps"
-                  placeholder="Ingresa aqui el paso a paso"
+                  placeholder="Enter the step by step here"
                   onChange={handleChange}
                />
                <label className="form-error">{error.steps}</label>
@@ -256,10 +253,9 @@ let FormRecipe = () => {
 
                <label htmlFor="image">Image:</label>
                <input
-                  /* value={formData.image} */
                   type="text"
                   name="image"
-                  placeholder="Ingresa aqui tu imagen"
+                  placeholder="Enter your image here"
                   onChange={handleChange}
                />
                <br />
@@ -267,10 +263,10 @@ let FormRecipe = () => {
                <label htmlFor="diets">Diets:</label>
                <select
                   name="diets"
-                  value={formData.diets}
+                  /* value={formData.diets} */
                   onChange={handleMultiSelectChange}
                >
-                  <option value="">Selecciona una dieta</option>
+                  <option value="">Select a diet</option>
                   {dietsData?.map((diet) => (
                      <option key={diet.nombre} value={diet.nombre}>
                         {diet.nombre}
@@ -280,7 +276,7 @@ let FormRecipe = () => {
                <label className="form-error"> {error.diets}</label>
 
                <div>
-                  Dietas seleccionadas:
+                  selected diets:
                   {formData.diets.map((dietId) => {
                      const selectedDiet = dietsData.find(
                         (diet) => diet.nombre === dietId
@@ -289,7 +285,7 @@ let FormRecipe = () => {
                         <div key={dietId} className="chip">
                            {selectedDiet
                               ? selectedDiet.nombre
-                              : "Nombre de dieta desconocido"}
+                              : "unknown diet name"}
                            <button onClick={() => handleChipRemove(dietId)}>
                               X
                            </button>
@@ -303,7 +299,7 @@ let FormRecipe = () => {
                   className="button-primary"
                   disabled={disable()}
                   type="submit"
-                  value="Enviar Receta"
+                  value="Send Recipe"
                />
             </form>
          </div>

@@ -12,7 +12,7 @@ const Landing = () => {
 
    return (
       <div className="landing-page">
-         <h3>Bienvenido a mi proyecto </h3>
+         <h2>Bienvenido a mi proyecto </h2>
 
          <button onClick={redirectHome} className="button-primary">
             HOME
