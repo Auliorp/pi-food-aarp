@@ -1,23 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Recipe from "./Recipe";
 import "./recipesContainer.css";
 import "../../utils/UI/buttons.css";
 
 import { Link } from "react-router-dom";
+import { getDiets } from "../../services/diets";
+import { getRecipes } from "../../services/recipes";
+import { useDispatch, useSelector } from "react-redux";
+import { setPage } from "../Redux/Actions/actions";
 
-function RecipesContainer({ recipes }) {
+function RecipesContainer() {
    const [searchQuery, setSearchQuery] = useState("");
    const [sortOrder, setSortOrder] = useState("asc");
    const [sortBy, setSortBy] = useState("name");
-   const [currentPage, setCurrentPage] = useState(1);
+   const [selectedDiet, setSelectedDiet] = useState("");
+   const [dietsData, setDietsData] = useState([]);
+   const [dataType, setDataType] = useState("all");
+   const [recipes, setRecipes] = useState([]);
+   const currentPage = useSelector((state) => state.paginator.currentPage);
+   const dispatch = useDispatch();
+
    const recipesPerPage = 9;
+
+   useEffect(() => {
+      fetchDiets();
+   }, []);
+
+   useEffect(() => {
+      fetchRecipes(dataType);
+   }, [dataType]);
+
+   const fetchRecipes = async (type) => {
+      const response = await getRecipes(type);
+
+      setRecipes(response);
+   };
+   const fetchDiets = async () => {
+      const response = await getDiets();
+
+      setDietsData(response);
+   };
 
    const handleSearchInputChange = (event) => {
       setSearchQuery(event.target.value);
    };
    //ordenar por tipo
    const handleSortByChange = (type) => {
-      setSortBy(type);
+      if (type === "diets") {
+         setSelectedDiet(selectedDiet === type ? "" : type);
+      } else {
+         setSortBy(type);
+      }
    };
    //ordenar por clasificacion
    const handleSortOrderChange = () => {
@@ -25,16 +58,18 @@ function RecipesContainer({ recipes }) {
    };
 
    const nextPage = () => {
-      setCurrentPage(currentPage + 1);
+      dispatch(setPage(currentPage + 1));
    };
 
    const prevPage = () => {
-      setCurrentPage(currentPage - 1);
+      dispatch(setPage(currentPage - 1));
    };
    //filtro y orden de recetas
    const filteredAndSortedRecipes = recipes
-      ?.filter((recipe) =>
-         recipe.name?.toLowerCase().includes(searchQuery?.toLowerCase())
+      ?.filter(
+         (recipe) =>
+            recipe.name?.toLowerCase().includes(searchQuery?.toLowerCase()) &&
+            (selectedDiet === "" || recipe.diets.includes(selectedDiet))
       )
       .sort((a, b) => {
          const aValue = sortBy === "name" ? a.name : a.healthScore;
@@ -42,8 +77,8 @@ function RecipesContainer({ recipes }) {
 
          if (sortBy === "name") {
             return sortOrder === "asc"
-               ? aValue.localeCompare(bValue, undefined, { numeric: true })
-               : bValue.localeCompare(aValue, undefined, { numeric: true });
+               ? aValue.localeCompare(bValue)
+               : bValue.localeCompare(aValue);
          } else {
             return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
          }
@@ -76,6 +111,38 @@ function RecipesContainer({ recipes }) {
                      <button className="button-primary">Landing</button>
                   </Link>
                </div>
+               {/* select filtro por dataId */}
+
+               <select
+                  value={dataType}
+                  onChange={(event) => setDataType(event.target.value)}
+                  className={
+                     sortBy === "data" ? "button-warning" : "button-primary"
+                  }
+               >
+                  <option value="all">All Recipes</option>
+                  <option value="api">Api</option>
+                  <option value="db">Db</option>
+               </select>
+
+               {/* select filtro de dietas */}
+
+               <select
+                  value={selectedDiet}
+                  onChange={(event) => setSelectedDiet(event.target.value)}
+                  className={
+                     sortBy === "healthScore"
+                        ? "button-warning"
+                        : "button-primary"
+                  }
+               >
+                  <option value="">Select a diet</option>
+                  {dietsData?.map((diet) => (
+                     <option key={diet.nombre} value={diet.nombre}>
+                        {diet.nombre}
+                     </option>
+                  ))}
+               </select>
 
                {/* Sorting Options */}
                <div className="sort-options">
@@ -87,6 +154,7 @@ function RecipesContainer({ recipes }) {
                   >
                      Sort by Name
                   </button>
+                  {/* health score */}
                   <button
                      onClick={() => handleSortByChange("healthScore")}
                      className={

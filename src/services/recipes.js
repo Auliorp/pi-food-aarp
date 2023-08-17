@@ -1,15 +1,17 @@
 import axios from "axios";
 
-export const getRecipes = async (name) => {
+export const getRecipes = async (type) => {
    let result;
    try {
       const params = {};
 
-      if (name) {
-         params.name = name;
+      if (type) {
+         params.type = type;
       }
-
-      const response = await axios.get(`http://localhost:3001/recipes`, params);
+      console.log(params);
+      const response = await axios.get(`http://localhost:3001/recipes`, {
+         params,
+      });
 
       result = response.data;
    } catch (error) {

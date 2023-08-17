@@ -66,6 +66,7 @@ let FormRecipe = () => {
 
    const handleMultiSelectChange = (event) => {
       const selectedOption = event.target.value;
+      //dietas actualizadas
       let updatedDiets;
 
       if (formData.diets.includes(selectedOption)) {
@@ -121,7 +122,7 @@ let FormRecipe = () => {
          event.target.name
       );
    };
-
+   //Desactivar
    const disable = () => {
       let disabled = true;
       for (let err in error) {
