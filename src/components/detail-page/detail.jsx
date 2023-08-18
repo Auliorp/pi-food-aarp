@@ -7,23 +7,28 @@ import "../../utils/UI/buttons.css";
 
 const Detail = (props) => {
    const [recipe, setRecipe] = useState(null);
-
    const { id } = useParams();
+   const navigate = useNavigate();
+
+   const deleteRegex = /<\/?[a-z][\s\S]*?>/gi;
 
    useEffect(() => {
       fetchRecipeById();
    }, []);
+
    //buscar receta por ID
    const fetchRecipeById = async () => {
-      const response = await getRecipesById(id);
-
-      setRecipe(response);
+      try {
+         const response = await getRecipesById(id);
+         setRecipe(response);
+      } catch (error) {
+         console.error(error);
+      }
    };
-   const navigate = useNavigate();
+
    const redirectHome = () => {
       navigate("/home");
    };
-   const deleteRegex = /<\/?[a-z][\s\S]*?>/gi;
 
    return recipe ? (
       <div className="detail-new">

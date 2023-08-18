@@ -6,8 +6,8 @@ import "../../utils/UI/buttons.css";
 import { Link } from "react-router-dom";
 import { getDiets } from "../../services/diets";
 import { getRecipes } from "../../services/recipes";
-import { useDispatch, useSelector } from "react-redux";
-import { setPage } from "../Redux/Actions/actions";
+import { useSelector } from "react-redux";
+import Paginate from "../paginate/paginate";
 
 function RecipesContainer() {
    const [searchQuery, setSearchQuery] = useState("");
@@ -17,10 +17,9 @@ function RecipesContainer() {
    const [dietsData, setDietsData] = useState([]);
    const [dataType, setDataType] = useState("all");
    const [recipes, setRecipes] = useState([]);
-   const currentPage = useSelector((state) => state.paginator.currentPage);
-   const dispatch = useDispatch();
 
-   const recipesPerPage = 9;
+   const currentPage = useSelector((state) => state.paginator.currentPage);
+   const recipesPerPage = 2;
 
    useEffect(() => {
       fetchDiets();
@@ -57,13 +56,6 @@ function RecipesContainer() {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
    };
 
-   const nextPage = () => {
-      dispatch(setPage(currentPage + 1));
-   };
-
-   const prevPage = () => {
-      dispatch(setPage(currentPage - 1));
-   };
    //filtro y orden de recetas
    const filteredAndSortedRecipes = recipes
       ?.filter(
@@ -173,28 +165,13 @@ function RecipesContainer() {
                   </button>
                </div>
 
-               {/* paginado */}
-               <div className="pagination">
-                  <button
-                     onClick={prevPage}
-                     disabled={currentPage === 1}
-                     className="button-primary"
-                  >
-                     Prev
-                  </button>
-                  <span>
-                     {currentPage}-{}
-                  </span>
-                  <button
-                     onClick={nextPage}
-                     disabled={
-                        indexOfLastRecipe >= filteredAndSortedRecipes?.length
-                     }
-                     className="button-primary"
-                  >
-                     Next
-                  </button>
-               </div>
+               <Paginate
+                  page={currentPage}
+                  disableNext={
+                     indexOfLastRecipe >= filteredAndSortedRecipes?.length
+                  }
+               />
+
                {/* formulario */}
                <div className="form-button">
                   <Link to={"/form"}>

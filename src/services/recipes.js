@@ -9,9 +9,12 @@ export const getRecipes = async (type) => {
          params.type = type;
       }
 
-      const response = await axios.get(`http://localhost:3001/recipes`, {
-         params,
-      });
+      const response = await axios.get(
+         `${process.env.REACT_APP_API_URL}recipes`,
+         {
+            params,
+         }
+      );
 
       result = response.data;
    } catch (error) {
@@ -23,7 +26,9 @@ export const getRecipes = async (type) => {
 export const getRecipesById = async (id) => {
    let result;
    try {
-      const response = await axios.get(`http://localhost:3001/recipe/${id}`);
+      const response = await axios.get(
+         `${process.env.REACT_APP_API_URL}recipe/${id}`
+      );
       result = response.data;
    } catch (error) {
       console.log(error);
@@ -34,7 +39,10 @@ export const getRecipesById = async (id) => {
 export const postDiets = async (recipe) => {
    let result;
    try {
-      const response = await axios.post(`http://localhost:3001/recipe`, recipe);
+      const response = await axios.post(
+         `${process.env.REACT_APP_API_URL}recipe`,
+         recipe
+      );
       result = response.data;
    } catch (error) {
       console.log(error);
@@ -45,7 +53,9 @@ export const postDiets = async (recipe) => {
 export const getAllRecipes = async () => {
    let result;
    try {
-      const response = await axios.get(`http://localhost:3001/allRecipes`);
+      const response = await axios.get(
+         `${process.env.REACT_APP_API_URL}allRecipes`
+      );
       result = response.data;
    } catch (error) {
       console.log(error);
