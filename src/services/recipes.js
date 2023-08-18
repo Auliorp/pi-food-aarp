@@ -8,7 +8,7 @@ export const getRecipes = async (type) => {
       if (type) {
          params.type = type;
       }
-      console.log(params);
+
       const response = await axios.get(`http://localhost:3001/recipes`, {
          params,
       });

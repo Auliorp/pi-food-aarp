@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { SET_PAGE } from "../Actions/actions";
+import { SET_PAGE } from "../Actions/type";
 
 const initialState = {
    currentPage: 1,

@@ -111,7 +111,7 @@ function RecipesContainer() {
                      <button className="button-primary">Landing</button>
                   </Link>
                </div>
-               {/* select filtro por dataId */}
+               {/* select filtro por data */}
 
                <select
                   value={dataType}
@@ -136,7 +136,7 @@ function RecipesContainer() {
                         : "button-primary"
                   }
                >
-                  <option value="">Select a diet</option>
+                  <option value="">All diets</option>
                   {dietsData?.map((diet) => (
                      <option key={diet.nombre} value={diet.nombre}>
                         {diet.nombre}
@@ -182,7 +182,9 @@ function RecipesContainer() {
                   >
                      Prev
                   </button>
-                  <span>{currentPage}</span>
+                  <span>
+                     {currentPage}-{}
+                  </span>
                   <button
                      onClick={nextPage}
                      disabled={
