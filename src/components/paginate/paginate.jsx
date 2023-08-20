@@ -23,7 +23,7 @@ const Paginate = (props) => {
          >
             Prev
          </button>
-         <span>{page}</span>
+         <span>{page} - 4</span>
          <button
             onClick={handlerNextPage}
             disabled={disableNext}
