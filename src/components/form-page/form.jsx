@@ -7,6 +7,7 @@ import { postDiets } from "../../services/recipes";
 import { useNavigate } from "react-router-dom";
 
 let FormRecipe = () => {
+   //estado local para los datos del formulario
    const [formData, setFormData] = useState({
       name: "",
       description: "",
@@ -16,17 +17,22 @@ let FormRecipe = () => {
       diets: [],
    });
 
+   //estado local para las dietas disponibles
    const [dietsData, setDietsData] = useState([]);
+
+   // Efecto para obtener las dietas al montar el componente
    useEffect(() => {
       fetchDiets();
    }, []);
 
+   //solicitud de data
    const fetchDiets = async () => {
       const response = await getDiets();
 
       setDietsData(response);
    };
 
+   // Estado local para los mensajes de error
    const [error, setError] = useState({
       name: "required field.",
       healthScore: "required field.",
@@ -34,13 +40,18 @@ let FormRecipe = () => {
       diets: "required field.",
    });
 
+   // Función para manejar el envío del formulario
    const handleSubmit = async (event) => {
+      //permite manejar el envio a traves de javascript
       event.preventDefault();
+      //se obtiene una referencia al elemento del DOM que representa el formulario
       const form = document.getElementById("form");
+
       try {
          // Llama a la función de servicio para enviar los datos a la db
          const response = await postDiets(formData);
 
+         //se envia alerta "receta creada exitosamente"
          window.alert("Recipe created successfully");
 
          // Limpia el formulario
@@ -52,6 +63,7 @@ let FormRecipe = () => {
             image: "",
             diets: [],
          });
+         //se utiliza para restablecer los valores del formulario a su valor inicial
          form.reset();
          setError({
             name: "required field.",
@@ -60,28 +72,32 @@ let FormRecipe = () => {
             diets: "required field.",
          });
       } catch (error) {
-         console.error("Error al crear la receta:", error);
+         console.error("Error creating recipe:", error);
       }
    };
-
+   //selecciona dietas en formulario
    const handleMultiSelectChange = (event) => {
       const selectedOption = event.target.value;
-      //dietas actualizadas
+
+      //dietas actualizadas y seleccionadas en el formulario
       let updatedDiets;
 
       if (formData.diets.includes(selectedOption)) {
+         //Si existe, crea una nueva lista de dietas excluyendo la opción seleccionada
          updatedDiets = formData.diets.filter(
             (diet) => diet !== selectedOption
          );
+
+         // Si no existe, agrega la opción seleccionada a la lista de dietas
       } else {
          updatedDiets = [...formData.diets, selectedOption];
       }
-
+      // Actualiza el estado del formulario con las dietas actualizadas
       setFormData({
          ...formData,
          diets: updatedDiets,
       });
-
+      // Llama a la función de validación para actualizar los errores relacionados con las dietas
       validate(
          {
             ...formData,
@@ -90,15 +106,17 @@ let FormRecipe = () => {
          "diets"
       );
    };
-
+   /* remover dietas */
    const handleChipRemove = (dietId) => {
+      // Filtra la lista de dietas del formulario para excluir la dieta que se va a remover
       const updatedDiets = formData.diets.filter((diet) => diet !== dietId);
 
+      // Actualiza el estado del formulario con las dietas actualizadas
       setFormData({
          ...formData,
          diets: updatedDiets,
       });
-
+      // Llama a la función de validación para actualizar los errores relacionados con las dietas
       validate(
          {
             ...formData,
@@ -107,13 +125,14 @@ let FormRecipe = () => {
          "diets"
       );
    };
-
+   // Función para manejar cambios en los campos de entrada del formulario
    const handleChange = (event) => {
+      // Actualiza el estado del formulario con el nuevo valor del campo modificado
       setFormData({
          ...formData,
          [event.target.name]: event.target.value,
       });
-
+      // Llama a la función de validación para actualizar los errores relacionados con el campo modificado
       validate(
          {
             ...formData,
@@ -122,7 +141,7 @@ let FormRecipe = () => {
          event.target.name
       );
    };
-   //Desactivar
+   //Desactivar boton de envio del formulario si hay errores
    const disable = () => {
       let disabled = true;
       for (let err in error) {
@@ -148,6 +167,11 @@ let FormRecipe = () => {
             });
          } else if (!letterRegex.test(formData.name)) {
             setError({ ...error, name: "only letters are allowed" });
+         } else if (formData.name.length > 30) {
+            setError({
+               ...error,
+               name: "Name cannot exceed 30 characters.",
+            });
          } else {
             setError({ ...error, name: "" });
          }
@@ -256,7 +280,7 @@ let FormRecipe = () => {
                <input
                   type="text"
                   name="image"
-                  placeholder="Enter your image here"
+                  placeholder="Enter your image URL here"
                   onChange={handleChange}
                />
                <br />

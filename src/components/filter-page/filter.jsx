@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getRecipes } from "../../services/recipes";
 import { getDiets } from "../../services/diets";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,45 +8,53 @@ import {
    setSortBy,
    setSortOrder,
    setRecipes,
+   pageOne,
 } from "../Redux/Actions/actions";
 
 export const Filter = () => {
+   //estado local
    const [dietsData, setDietsData] = useState([]);
+   //Se utiliza para obtener el estado del Redux store
    const { dataType, selectedDiet, sortBy, sortOrder } = useSelector(
       (state) => state.filtersAndRecipes.filter
    );
-
+   //permite enviar acciones al Redux store
    const dispatch = useDispatch();
 
    //ordenar por tipo
    const handleSortByChange = (type) => {
       if (type === "diets") {
          dispatch(setDataType(selectedDiet === type ? "" : type));
+         dispatch(pageOne());
       } else {
          dispatch(setSortBy(type));
+         dispatch(pageOne());
       }
    };
 
-   //ordenar por clasificacion
+   //ordenar por clasificacion(asc/desc)
    const handleSortOrderChange = () => {
       dispatch(setSortOrder(sortOrder === "asc" ? "desc" : "asc"));
+      dispatch(pageOne());
    };
 
-   const fetchRecipes = useCallback(async (type) => {
-      const response = await getRecipes(type);
-
-      dispatch(setRecipes(response));
-   }, []);
-
+   //Obtiene las dietas y las almacena en el estado local
    const fetchDiets = async () => {
       const response = await getDiets();
 
       setDietsData(response);
    };
-
+   //se realizar acciones cuando el componente se monta y cuando cambia el tipo de data
    useEffect(() => {
-      fetchRecipes(dataType);
-   }, [dataType, fetchRecipes]);
+      //obtiene las recetas según el tipo de data seleccionado y las almacena en el store
+      const fetchRecipes = async () => {
+         const response = await getRecipes(dataType);
+
+         dispatch(setRecipes(response));
+         dispatch(pageOne());
+      };
+      fetchRecipes();
+   }, [dataType, dispatch]);
 
    useEffect(() => {
       fetchDiets();
@@ -54,9 +62,13 @@ export const Filter = () => {
 
    return (
       <>
+         {/* tipos de data */}
          <select
             value={dataType}
-            onChange={(event) => dispatch(setDataType(event.target.value))}
+            onChange={(event) => {
+               dispatch(setDataType(event.target.value));
+               dispatch(pageOne());
+            }}
             className={sortBy === "data" ? "button-warning" : "button-primary"}
          >
             <option value="all">All Recipes</option>
@@ -64,9 +76,13 @@ export const Filter = () => {
             <option value="db">Db</option>
          </select>
 
+         {/* tipo de dietas */}
          <select
             value={selectedDiet}
-            onChange={(event) => dispatch(setSelectedDiet(event.target.value))}
+            onChange={(event) => {
+               dispatch(setSelectedDiet(event.target.value));
+               dispatch(pageOne());
+            }}
             className={
                sortBy === "healthScore" ? "button-warning" : "button-primary"
             }
@@ -79,6 +95,7 @@ export const Filter = () => {
             ))}
          </select>
 
+         {/* por nombre */}
          <div className="sort-options">
             <button
                onClick={() => handleSortByChange("name")}
@@ -89,7 +106,7 @@ export const Filter = () => {
                Sort by Name
             </button>
 
-            {/* health score */}
+            {/* por health score */}
             <button
                onClick={() => handleSortByChange("healthScore")}
                className={
@@ -98,6 +115,8 @@ export const Filter = () => {
             >
                Sort by Health Score
             </button>
+
+            {/* asc/desc */}
             <button onClick={handleSortOrderChange} className="clean-button">
                {sortOrder === "asc" ? "Asc" : "Desc"}
             </button>

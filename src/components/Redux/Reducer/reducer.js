@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import {
    NEXT_PAGE,
+   PAGE_ONE,
    PREVIOUS_PAGE,
    SELECTED_DIET,
    SET_DATATYPE,
@@ -20,6 +21,7 @@ const initialFilterAndRecipesState = {
       selectedDiet: "",
       sortBy: "name",
       sortOrder: "asc",
+      currentPage: 1,
    },
    recipes: [],
 };
@@ -42,6 +44,10 @@ export const paginatorReducer = (state = initialState, action) => {
             ...state,
             currentPage: state.currentPage + 1,
          };
+
+      case PAGE_ONE:
+         return { ...state, currentPage: 1 };
+
       default:
          return state;
    }

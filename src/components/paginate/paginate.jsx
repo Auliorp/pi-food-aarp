@@ -3,7 +3,8 @@ import { useDispatch } from "react-redux";
 import { nextPage, previousPage } from "../Redux/Actions/actions";
 
 const Paginate = (props) => {
-   const { page, disableNext } = props;
+   const { page, totalPages, disableNext } = props;
+
    const dispatch = useDispatch();
 
    const handlerNextPage = () => {
@@ -23,7 +24,9 @@ const Paginate = (props) => {
          >
             Prev
          </button>
-         <span>{page} - 4</span>
+         <span>
+            {page} / {totalPages}
+         </span>
          <button
             onClick={handlerNextPage}
             disabled={disableNext}

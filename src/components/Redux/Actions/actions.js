@@ -7,6 +7,7 @@ import {
    SORT_BY,
    SORT_ORDER,
    SET_RECIPES,
+   PAGE_ONE,
 } from "./type";
 
 export const setPage = (pageNumber) => ({
@@ -21,6 +22,11 @@ export const nextPage = () => ({
 
 export const previousPage = () => ({
    type: PREVIOUS_PAGE,
+   payload: null,
+});
+
+export const pageOne = () => ({
+   type: PAGE_ONE,
    payload: null,
 });
 

@@ -6,3 +6,4 @@ export const SELECTED_DIET = "SELECTED_DIET";
 export const SORT_BY = "SORT_BY";
 export const SORT_ORDER = "SORT_ORDER";
 export const SET_RECIPES = "SET_RECIPES";
+export const PAGE_ONE = "PAGE_ONE";
