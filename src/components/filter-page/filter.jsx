@@ -12,13 +12,12 @@ import {
 } from "../Redux/Actions/actions";
 
 export const Filter = () => {
-   //estado local
    const [dietsData, setDietsData] = useState([]);
-   //Se utiliza para obtener el estado del Redux store
+
    const { dataType, selectedDiet, sortBy, sortOrder } = useSelector(
       (state) => state.filtersAndRecipes.filter
    );
-   //permite enviar acciones al Redux store
+
    const dispatch = useDispatch();
 
    //ordenar por tipo
@@ -32,21 +31,18 @@ export const Filter = () => {
       }
    };
 
-   //ordenar por clasificacion(asc/desc)
    const handleSortOrderChange = () => {
       dispatch(setSortOrder(sortOrder === "asc" ? "desc" : "asc"));
       dispatch(pageOne());
    };
 
-   //Obtiene las dietas y las almacena en el estado local
    const fetchDiets = async () => {
       const response = await getDiets();
 
       setDietsData(response);
    };
-   //se realizar acciones cuando el componente se monta y cuando cambia el tipo de data
+
    useEffect(() => {
-      //obtiene las recetas según el tipo de data seleccionado y las almacena en el store
       const fetchRecipes = async () => {
          const response = await getRecipes(dataType);
 

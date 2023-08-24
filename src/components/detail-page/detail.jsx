@@ -6,18 +6,14 @@ import "./detail.css";
 import "../../utils/UI/buttons.css";
 
 const Detail = () => {
-   //Estado local
    const [recipe, setRecipe] = useState(null);
-   //se accede a los parametros de la URL(id)
+
    const { id } = useParams();
-   //redirige al usuario a una ruta de navegacion diferente
+
    const navigate = useNavigate();
 
-   //regex para eliminar etiquetas HTML
    const deleteRegex = /<\/?[a-z][\s\S]*?>/gi;
 
-   //realizar una solicitud de obtención de detalles de una receta por su ID
-   //cuando el componente se monta por primera vez.
    useEffect(() => {
       fetchRecipeById();
    }, []);
@@ -31,7 +27,7 @@ const Detail = () => {
          console.error(error);
       }
    };
-   //redirige al usuario a una ruta de navegacion diferente
+
    const redirectHome = () => {
       navigate("/home");
    };
